@@ -3,331 +3,399 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selamat Ulang Tahun - Pastel Version</title>
-    <!-- Font Modern -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-    
+    <title>Loading... 2000</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=VT323&family=Fredoka+One&display=swap" rel="stylesheet">
     <style>
-        /* --- CSS DASAR & VARIABEL --- */
+        /* --- RESET & VARIABLES --- */
         :root {
-            /* Warna Pastel Biru Muda */
-            --bg-pastel: #dbeafe;       /* Biru sangat muda */
-            --bg-pastel-gradient: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-            
-            /* Warna Aksen (Tetap futuristik tapi lebih lembut) */
-            --primary-color: #0284c7;   /* Biru Muda Pekat */
-            --secondary-color: #6366f1; /* Ungu Lembut */
-            
-            /* Kaca (Glassmorphism) - Lebih gelap dari latar agar terlihat */
-            --glass-bg: rgba(255, 255, 255, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.8);
-            --text-color: #1e293b;      /* Abu gelap untuk teks */
+            --pastel-blue: #A2D2FF;
+            --dark-blue: #4A90E2;
+            --white: #ffffff;
+            --pink: #FFB7B2;
+            --border-light: #ffffff;
+            --border-dark: #000080;
+            --gray-btn: #c0c0c0;
         }
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-pastel-gradient);
-            background-attachment: fixed;
-            color: var(--text-color);
-            overflow-x: hidden;
-            height: 100vh;
+            background-color: var(--pastel-blue);
+            font-family: 'Comic Neue', cursive;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(white 15%, transparent 16%),
+                radial-gradient(white 15%, transparent 16%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
         }
 
-        /* --- LATAR BELAKANG ANIMASI (CANVAS) --- */
-        #canvas-bg {
-            position: absolute;
+        /* --- ANIMASI Loading / Countdown --- */
+        #loading-screen {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-        }
-
-        /* --- KONTAINER UTAMA (Glassmorphism) --- */
-        .container {
-            text-align: center;
-            z-index: 1;
-            padding: 3rem;
-            max-width: 800px;
-            width: 90%;
-            
-            /* Efek Glassmorphism untuk latar terang */
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            box-shadow: 
-                0 8px 32px 0 rgba(31, 38, 135, 0.1),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.5);
-            transition: transform 0.3s ease;
-        }
-
-        .container:hover {
-            transform: scale(1.01);
-        }
-
-        /* --- TIPOGRAFI --- */
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
-            margin-bottom: 10px;
-            color: var(--primary-color);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        p.subtitle {
-            font-size: 1.2rem;
-            color: #475569;
-            margin-bottom: 40px;
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
-
-        /* --- HITUNG MUNDUR --- */
-        .countdown-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 40px;
-        }
-
-        .time-box {
+            background: var(--pastel-blue);
+            z-index: 100;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.5);
-            width: 100px;
-            height: 100px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.1);
-            transition: all 0.3s ease;
+            align-items: center;
+            transition: opacity 0.8s ease;
         }
 
-        .time-box:hover {
-            transform: translateY(-5px);
-            background: white;
-            box-shadow: 0 8px 25px rgba(2, 132, 199, 0.2);
+        .window-box {
+            background: #cceeff;
+            border: 4px solid var(--white);
+            border-right-color: #424242;
+            border-bottom-color: #424242;
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.2);
+            padding: 4px;
+            width: 90%;
+            max-width: 500px;
         }
 
-        .number {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: var(--primary-color);
+        .win-header {
+            background: var(--dark-blue);
+            color: white;
+            padding: 4px 8px;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            border: 2px solid white;
         }
 
-        .label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: #64748b;
-            font-weight: 600;
-            margin-top: 4px;
+        .win-content {
+            background: var(--white);
+            border: 3px groove #ccc;
+            padding: 20px;
+            text-align: center;
         }
 
-        /* --- PESAN AKHIR --- */
-        .message {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            display: none;
-            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .confetti {
+        /* --- JAM DIGITAL Y2K --- */
+        .digital-clock {
+            font-family: 'VT323', monospace;
+            font-size: 3.5rem;
+            color: #333;
+            background: #000;
+            color: #00ff00; /* Warna hijau matrix/led */
+            padding: 10px;
+            border: 4px inset #555;
+            margin: 15px 0;
+            text-shadow: 0 0 5px #00ff00;
             display: inline-block;
-            margin: 0 5px;
+            min-width: 220px;
         }
 
-        /* --- ANIMASI --- */
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.5); }
-            100% { opacity: 1; transform: scale(1); }
+        .info-text {
+            font-family: 'Comic Neue', cursive;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #333;
         }
 
-        /* Responsif Mobile */
-        @media (max-width: 600px) {
-            h1 { font-size: 2rem; }
-            .container { padding: 1.5rem; }
-            .time-box { width: 70px; height: 70px; }
-            .number { font-size: 1.5rem; }
-            .label { font-size: 0.6rem; }
+        .loading-text {
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        /* --- HALAMAN UCAPAN (Hidden Awal) --- */
+        #greeting-page {
+            display: none;
+            width: 90%;
+            max-width: 600px;
+            background: #cceeff;
+            border: 4px solid var(--white);
+            border-right-color: #424242;
+            border-bottom-color: #424242;
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.2);
+            padding: 10px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .window-header {
+            background: var(--dark-blue);
+            color: white;
+            padding: 5px 10px;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            border: 2px solid white;
+        }
+
+        .content-box {
+            background: var(--white);
+            border: 3px groove #ccc;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .photo-frame {
+            border: 5px inset var(--pastel-blue);
+            padding: 5px;
+            background: #eee;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .photo-frame img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border: 2px solid var(--border-dark);
+            filter: contrast(1.1) saturate(1.2); 
+        }
+
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            color: var(--dark-blue);
+            font-size: 2.5rem;
+            text-shadow: 2px 2px var(--pink);
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .blink {
+            animation: blinker 1.5s linear infinite;
+            color: red;
+            font-weight: bold;
+            font-size: 1.5rem;
+            font-family: 'VT323', monospace;
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+
+        .marquee-container {
+            background: var(--pink);
+            color: white;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            padding: 5px;
+            margin-top: 15px;
+            border: 2px solid var(--border-dark);
+        }
+
+        .btn-y2k {
+            background: #c0c0c0;
+            border: 3px solid white;
+            border-right-color: #424242;
+            border-bottom-color: #424242;
+            color: black;
+            padding: 10px 20px;
+            font-family: 'VT323', monospace;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 15px;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-y2k:active {
+            border: 3px solid #424242;
+            border-right-color: white;
+            border-bottom-color: white;
+            transform: translate(2px, 2px);
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #666;
+            text-align: right;
+            font-family: monospace;
+        }
+
+        /* Floating Hearts */
+        .floating-heart {
+            position: absolute;
+            color: var(--pink);
+            font-size: 20px;
+            animation: floatUp 4s linear infinite;
+            z-index: 5;
+            opacity: 0.7;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            h1 { font-size: 1.8rem; }
+            .photo-frame img { width: 150px; height: 150px; }
+            .digital-clock { font-size: 2.5rem; min-width: 180px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Elemen Kanvas untuk Animasi Latar -->
-    <canvas id="canvas-bg"></canvas>
-
-    <div class="container">
-        <h1 id="greeting-title">HAPPY BIRTHDAY</h1>
-        <p class="subtitle" id="name-display">Kirot</p>
-
-        <!-- Area Hitung Mundur -->
-        <div class="countdown-container" id="countdown">
-            <div class="time-box">
-                <span class="number" id="days">00</span>
-                <span class="label">Hari</span>
+    <!-- ================= Halaman 1: Loading / Countdown Jam ================= -->
+    <div id="loading-screen">
+        <div class="window-box">
+            <div class="win-header">
+                <span>System Boot - Waiting for User</span>
+                <span>_</span>
             </div>
-            <div class="time-box">
-                <span class="number" id="hours">00</span>
-                <span class="label">Jam</span>
+            <div class="win-content">
+                <div class="info-text">Hitung Mundur Menuju:</div>
+                <!-- Jam Target (Nanti diedit di JS) -->
+                <div class="digital-clock" id="countdown">00:00:00</div>
+                
+                <div class="loading-text" id="status-text">Harap Menunggu...</div>
             </div>
-            <div class="time-box">
-                <span class="number" id="minutes">00</span>
-                <span class="label">Menit</span>
-            </div>
-            <div class="time-box">
-                <span class="number" id="seconds">00</span>
-                <span class="label">Detik</span>
-            </div>
-        </div>
-
-        <!-- Pesan yang muncul setelah hitung mundur selesai -->
-        <div class="message" id="birthday-message">
-            <span class="confetti">🎉</span> Selamat Ulang Tahun! <span class="confetti">🎂</span><br>
-            <span style="font-size: 1rem; color: #475569; font-weight: normal;">Semoga panjang umur dan bahagia selalu.</span>
         </div>
     </div>
 
+    <!-- ================= Halaman 2: Ucapan Utama ================= -->
+    <div id="greeting-page">
+        <div class="window-header">
+            <span>Internet Explorer - Birthday.exe</span>
+            <span>X</span>
+        </div>
+
+        <div class="content-box">
+            <div class="photo-frame">
+                <!-- Ganti URL gambar di bawah ini -->
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Foto Ulang Tahun">
+            </div>
+
+            <h1>PANJANG PANJANG KIROT!!</h1>
+            
+            <p>Semoga Makin Jago Gitars!</p>
+            
+            <p class="blink">Top Guitarist in Gianyars!</p>
+            
+            <p>Semoga panjang umur, sehat selalu, dan jago gitar. Meskipun cuma web statis, tapi harapan baiknya jago gitars! 😉</p>
+
+            <button class="btn-y2k" onclick="alert('🎵: Happy Birthday to You!')">📼 Play Music</button>
+        </div>
+
+        <div class="marquee-container">
+            <marquee scrollamount="5" scrolldelay="100">
+                ★ HAPPY BIRTHDAY KIROT ★ 15 ★ DON'T GROW UP ★
+            </marquee>
+        </div>
+
+        <div class="footer">
+            Ogoh-Ogoh Non-Extreme | 2026
+        </div>
+    </div>
+
+    <div id="hearts-container"></div>
+
     <script>
-        /* --- 1. KONFIGURASI HITUNG MUNDUR --- */
+        // --- KONFIGURASI WAKTU TARGET (UBAH DI SINI) ---
+        // Default: Menuju Tengah Malam Ini (00:00:00)
+        let targetDate = new Date();
+        targetDate.setHours(22, 49, 0, 0); 
         
-        // Ganti tanggal ini dengan tanggal ulang tahun yang diinginkan
-        // Contoh: "December 25, 2025 00:00:00"
-        // Saat ini diatur ke tanggal 1 Januari 2030 agar hitung mundur berjalan lama
-        const targetDate = new Date("February 28, 2026 21:16:00").getTime();
+        // Contoh lain jika ingin mengatur jam tertentu:
+        // let targetDate = new Date();
+        // targetDate.setHours(18, 30, 0, 0); // Jam 6:30 Sore
 
-        const timer = setInterval(function() {
+        const countdownElement = document.getElementById('countdown');
+        const statusText = document.getElementById('status-text');
+        const loadingScreen = document.getElementById('loading-screen');
+        const greetingPage = document.getElementById('greeting-page');
+
+        let isFinished = false;
+
+        function updateCountdown() {
             const now = new Date().getTime();
-            const distance = targetDate - now;
+            const distance = targetDate.getTime() - now;
 
-            if (distance < 0) {
-                clearInterval(timer);
-                document.getElementById("countdown").style.display = "none";
-                document.getElementById("birthday-message").style.display = "block";
-                document.getElementById("greeting-title").innerText = "SELAMAT ULANG TAHUN!";
+            if (distance < 0 && !isFinished) {
+                // Jika waktu sudah tercapai
+                clearInterval(interval);
+                countdownElement.innerHTML = "00:00:00";
+                statusText.innerHTML = "<span style='color:green; font-weight:bold;'>SYSTEM READY!</span>";
+                statusText.style.fontSize = "1.5rem";
+                
+                // Tunda masuk 1 detik agar user sempat baca "SYSTEM READY"
+                setTimeout(finishLoading, 1000); 
                 return;
             }
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            // Hitung jam, menit, detik
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
-            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
-            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
-            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
-        }, 1000);
+            // Format angka agar selalu 2 digit (misal 05:02:09)
+            const h = hours < 10 ? "0" + hours : hours;
+            const m = minutes < 10 ? "0" + minutes : minutes;
+            const s = seconds < 10 ? "0" + seconds : seconds;
 
-
-        /* --- 2. ANIMASI LATAR BELAKANG (PARTIKEL PASTEL) --- */
-        
-        const canvas = document.getElementById('canvas-bg');
-        const ctx = canvas.getContext('2d');
-        
-        let width, height;
-        let particles = [];
-
-        function resize() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-        }
-        
-        window.addEventListener('resize', resize);
-        resize();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                // Kecepatan lebih lambat untuk efek rileks
-                this.vx = (Math.random() - 0.5) * 0.8; 
-                this.vy = (Math.random() - 0.5) * 0.8; 
-                this.size = Math.random() * 3 + 1;
-                
-                // Warna acak pastel (Biru, Ungu, Putih)
-                const colors = [
-                    'rgba(56, 189, 248, 0.4)', // Pastel Blue
-                    'rgba(165, 180, 252, 0.4)', // Pastel Purple
-                    'rgba(255, 255, 255, 0.6)'  // White
-                ];
-                this.color = colors[Math.floor(Math.random() * colors.length)];
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
-            }
-
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            const particleCount = 80; // Jumlah partikel
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
+            countdownElement.innerHTML = `${h}:${m}:${s}`;
             
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-                
-                // Garis penghubung (Constellation) lebih tipis dan transparan
-                for (let j = i; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 120) {
-                        ctx.beginPath();
-                        // Gradient garis sesuaikan latar
-                        ctx.strokeStyle = `rgba(186, 230, 253, ${0.3 - distance/400})`; 
-                        ctx.lineWidth = 0.5;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
+            // Update status text
+            if(hours > 0) {
+                statusText.innerText = "Mohon tunggu sebentar...";
+            } else if (minutes > 0) {
+                statusText.innerText = "Hampir tiba...";
+            } else {
+                statusText.innerText = "Segera...";
+                countdownElement.style.color = "red"; // Warning color
             }
-            requestAnimationFrame(animate);
         }
 
-        initParticles();
-        animate();
+        // Jalankan update setiap 1 detik
+        const interval = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Jalankan langsung
 
+        function finishLoading() {
+            if(isFinished) return;
+            isFinished = true;
+            clearInterval(interval);
+
+            loadingScreen.style.opacity = "0";
+            setTimeout(() => {
+                loadingScreen.style.display = "none";
+                greetingPage.style.display = "block";
+                setInterval(createHearts, 500);
+            }, 800);
+        }
+
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = '❤';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            container.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
     </script>
 </body>
 </html>
