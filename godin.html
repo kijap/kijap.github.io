@@ -61,7 +61,7 @@ p{font-size:1.1rem;color:var(--dark);margin-bottom:15px}
 </div>
 <div id="hearts-container"></div>
 <script>
-let targetDate=new Date();targetDate.setHours(0,0,0,0);
+let targetDate=new Date();targetDate.setHours(24,0,0,0);
 const countdownElement=document.getElementById('countdown');
 const statusText=document.getElementById('status-text');
 const loadingScreen=document.getElementById('loading-screen');
@@ -72,7 +72,7 @@ const now=new Date().getTime();
 const distance=targetDate.getTime()-now;
 if(distance<0&&!isFinished){
 clearInterval(interval);
-countdownElement.innerHTML="24:00:00";
+countdownElement.innerHTML="00:00:00";
 statusText.innerHTML="<span style='color:var(--gold); font-weight:bold;'>SYSTEM READY!</span>";
 statusText.style.fontSize="1.5rem";
 setTimeout(finishLoading,1000);
