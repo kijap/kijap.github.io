@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Effection Login - 2000</title>
+<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=VT323&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root{--red:#D32F2F;--gold:#FFD700;--dark:#8B0000;--cream:#FFF8E1}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--red);font-family:'Comic Neue',cursive;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden;background-image:radial-gradient(var(--gold) 15%,transparent 16%),radial-gradient(var(--gold) 15%,transparent 16%);background-size:60px 60px;background-position:0 0,30px 30px}
+.login-container{width:90%;max-width:450px;background:var(--cream);border:4px solid var(--gold);border-right-color:var(--dark);border-bottom-color:var(--dark);box-shadow:8px 8px 0px rgba(0,0,0,0.3);padding:4px}
+.window-header{background:var(--gold);color:var(--dark);padding:6px 10px;font-family:'VT323',monospace;font-size:1.3rem;display:flex;justify-content:space-between;align-items:center;border:2px solid var(--dark);margin-bottom:4px;font-weight:bold}
+.content-box{background:var(--cream);border:3px groove var(--gold);padding:25px;text-align:center}
+.login-label{font-family:'Comic Neue',cursive;font-size:1.2rem;font-weight:bold;color:var(--dark);margin-bottom:10px;display:block}
+.y2k-input{width:100%;padding:10px;font-family:'VT323',monospace;font-size:1.5rem;border:3px solid;border-color:var(--dark) var(--cream) var(--cream) var(--dark);background:#fff;margin-bottom:20px;outline:none;text-align:center;color:var(--dark)}
+.y2k-input:focus{background:#fff8e1}
+.y2k-btn{background:var(--gold);border:3px solid var(--dark);border-right-color:var(--cream);border-bottom-color:var(--cream);color:var(--dark);padding:10px 25px;font-family:'VT323',monospace;font-size:1.3rem;cursor:pointer;display:inline-block;width:100%;text-decoration:none;font-weight:bold}
+.y2k-btn:active{border:3px solid var(--cream);border-right-color:var(--dark);border-bottom-color:var(--dark);transform:translate(2px,2px)}
+.error-msg{margin-top:15px;color:var(--dark);font-family:'VT323',monospace;font-size:1.2rem;display:none;animation:shake 0.5s;border:2px dashed var(--dark);padding:5px;background:#ffe6e6}
+@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-5px)}100%{transform:translateX(0)}}
+.icon-lock{font-size:40px;margin-bottom:10px;display:block}
+</style>
+</head>
+<body>
+<div class="login-container">
+<div class="window-header"><span>Kode Refrensi - Security Check</span><span>X</span></div>
+<div class="content-box">
+<span class="icon-lock">🧧</span>
+<label class="login-label" for="username">Kode?</label>
+<input type="text" id="username" class="y2k-input" placeholder="Ketik kode..." autocomplete="off">
+<button class="y2k-btn" onclick="cekNama()">MASUK &rarr;</button>
+<div id="error-message" class="error-msg">❌ ACCESS DENIED!<br>Kode yang Anda masukkan salah.</div>
+</div>
+</div>
+<script>
+function cekNama(){
+const inputNama=document.getElementById('username').value;
+const errorMsg=document.getElementById('error-message');
+const namaTrimmed=inputNama.trim().toLowerCase();
+if(namaTrimmed==="storrytelling26"){
+window.location.href="godin.html";
+}else{
+errorMsg.style.display="block";
+document.getElementById('username').value="";
+document.getElementById('username').focus();
+}
+}
+document.getElementById("username").addEventListener("keypress",function(event){
+if(event.key==="Enter"){cekNama();}
+});
+</script>
+</body>
+</html>
