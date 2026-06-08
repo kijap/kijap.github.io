@@ -1,54 +1,372 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Effection Login - 2000</title>
-<link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=VT323&family=Fredoka+One&display=swap" rel="stylesheet">
-<style>
-:root{--red:#D32F2F;--gold:#FFD700;--dark:#8B0000;--cream:#FFF8E1}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--red);font-family:'Comic Neue',cursive;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden;background-image:radial-gradient(var(--gold) 15%,transparent 16%),radial-gradient(var(--gold) 15%,transparent 16%);background-size:60px 60px;background-position:0 0,30px 30px}
-.login-container{width:90%;max-width:450px;background:var(--cream);border:4px solid var(--gold);border-right-color:var(--dark);border-bottom-color:var(--dark);box-shadow:8px 8px 0px rgba(0,0,0,0.3);padding:4px}
-.window-header{background:var(--gold);color:var(--dark);padding:6px 10px;font-family:'VT323',monospace;font-size:1.3rem;display:flex;justify-content:space-between;align-items:center;border:2px solid var(--dark);margin-bottom:4px;font-weight:bold}
-.content-box{background:var(--cream);border:3px groove var(--gold);padding:25px;text-align:center}
-.login-label{font-family:'Comic Neue',cursive;font-size:1.2rem;font-weight:bold;color:var(--dark);margin-bottom:10px;display:block}
-.y2k-input{width:100%;padding:10px;font-family:'VT323',monospace;font-size:1.5rem;border:3px solid;border-color:var(--dark) var(--cream) var(--cream) var(--dark);background:#fff;margin-bottom:20px;outline:none;text-align:center;color:var(--dark)}
-.y2k-input:focus{background:#fff8e1}
-.y2k-btn{background:var(--gold);border:3px solid var(--dark);border-right-color:var(--cream);border-bottom-color:var(--cream);color:var(--dark);padding:10px 25px;font-family:'VT323',monospace;font-size:1.3rem;cursor:pointer;display:inline-block;width:100%;text-decoration:none;font-weight:bold}
-.y2k-btn:active{border:3px solid var(--cream);border-right-color:var(--dark);border-bottom-color:var(--dark);transform:translate(2px,2px)}
-.error-msg{margin-top:15px;color:var(--dark);font-family:'VT323',monospace;font-size:1.2rem;display:none;animation:shake 0.5s;border:2px dashed var(--dark);padding:5px;background:#ffe6e6}
-@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-5px)}100%{transform:translateX(0)}}
-.icon-lock{font-size:40px;margin-bottom:10px;display:block}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Akses: Marco Putih</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* === VARIABEL WARNA NEON & PENGATURAN AWAL === */
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-magenta: #ff00ff;
+            --neon-white: #ffffff;
+            --bg-color: #050510;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            /* Menggunakan font Manera jika ada, jika tidak pakai Orbitron */
+            font-family: 'Manera', 'Orbitron', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--neon-white);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            perspective: 1000px; /* Untuk efek 3D */
+        }
+
+        /* Latar Belakang Maximalism 3D */
+        .background-orbs {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 10s infinite alternate ease-in-out;
+        }
+
+        .orb-1 { width: 400px; height: 400px; background: var(--neon-cyan); top: -100px; left: -100px; }
+        .orb-2 { width: 500px; height: 500px; background: var(--neon-magenta); bottom: -150px; right: -100px; animation-duration: 12s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.2); }
+        }
+
+        /* === HALAMAN LOGIN === */
+        #login-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(10, 10, 20, 0.8);
+            padding: 50px;
+            border: 2px solid var(--neon-cyan);
+            border-radius: 20px;
+            box-shadow: 0 0 20px var(--neon-cyan), inset 0 0 20px var(--neon-cyan);
+            backdrop-filter: blur(10px);
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+            z-index: 10;
+        }
+
+        #login-screen h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+            text-align: center;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.2rem;
+            background: transparent;
+            border: 2px solid var(--neon-magenta);
+            color: #fff;
+            border-radius: 10px;
+            outline: none;
+            font-family: inherit;
+            box-shadow: 0 0 10px var(--neon-magenta);
+            transition: 0.3s;
+        }
+
+        input:focus {
+            box-shadow: 0 0 25px var(--neon-magenta), inset 0 0 10px var(--neon-magenta);
+            transform: scale(1.05);
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-family: inherit;
+            cursor: pointer;
+            background: transparent;
+            color: var(--neon-cyan);
+            border: 2px solid var(--neon-cyan);
+            border-radius: 10px;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px var(--neon-cyan);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 300%; height: 300%;
+            background: var(--neon-cyan);
+            transition: all 0.5s;
+            border-radius: 50%;
+            z-index: -1;
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        button:hover {
+            color: #000;
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 0 30px var(--neon-cyan), 0 0 60px var(--neon-cyan);
+        }
+
+        button:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .error-msg {
+            color: #ff3333;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            text-shadow: 0 0 5px #ff3333;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        /* === HALAMAN UTAMA (UCAPAN) === */
+        #main-screen {
+            display: none; /* Disembunyikan sampai login berhasil */
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            max-width: 800px;
+            transform-style: preserve-3d;
+            animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            z-index: 10;
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.5) translateZ(-500px) rotateX(45deg); }
+            100% { opacity: 1; transform: scale(1) translateZ(0) rotateX(0deg); }
+        }
+
+        /* Efek Kartu 3D Dinamis */
+        .card-3d {
+            background: rgba(20, 20, 35, 0.6);
+            border: 2px solid var(--neon-magenta);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px var(--neon-magenta), inset 0 0 20px rgba(255,0,255,0.3);
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.1s; /* Digerakkan oleh JS */
+            transform-style: preserve-3d;
+        }
+
+        .title-glow {
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 
+                0 0 5px #fff, 0 0 10px #fff, 
+                0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan), 
+                0 0 80px var(--neon-cyan);
+            transform: translateZ(50px); /* Efek melayang 3D */
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { text-shadow: 0 0 5px #fff, 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan); }
+            100% { text-shadow: 0 0 10px #fff, 0 0 30px var(--neon-cyan), 0 0 60px var(--neon-cyan), 0 0 100px var(--neon-cyan); }
+        }
+
+        /* Pengaturan Foto dengan Pinggiran Blur & Gradasi */
+        .photo-container {
+            position: relative;
+            width: 300px;
+            height: 350px;
+            margin: 20px 0;
+            transform: translateZ(80px); /* Melayang lebih tinggi dari teks */
+            border-radius: 20px;
+            transition: transform 0.5s;
+        }
+
+        .photo-container:hover {
+            transform: translateZ(100px) scale(1.05) rotateY(10deg);
+        }
+
+        .foto-marco {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            /* Efek Pinggiran Blur */
+            mask-image: radial-gradient(ellipse, black 50%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse, black 50%, transparent 100%);
+        }
+
+        /* Gradasi hitam di bagian bawah foto */
+        .gradient-overlay {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 50%;
+            background: linear-gradient(to bottom, transparent 0%, rgba(5,5,16,1) 100%);
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            pointer-events: none;
+        }
+
+        .ucapan-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 243, 255, 0.1);
+            border-left: 5px solid var(--neon-cyan);
+            border-right: 5px solid var(--neon-cyan);
+            border-radius: 15px;
+            transform: translateZ(30px);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+
+        .highlight-putih {
+            color: var(--neon-white);
+            font-weight: 900;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
-<div class="login-container">
-<div class="window-header"><span>Kode Refrensi - Security Check</span><span>X</span></div>
-<div class="content-box">
-<span class="icon-lock">🧧</span>
-<label class="login-label" for="username">Kode?</label>
-<input type="text" id="username" class="y2k-input" placeholder="Ketik kode..." autocomplete="off">
-<button class="y2k-btn" onclick="cekNama()">MASUK &rarr;</button>
-<div id="error-message" class="error-msg">❌ ACCESS DENIED!<br>Kode yang Anda masukkan salah.</div>
-</div>
-</div>
-<script>
-function cekNama(){
-const inputNama=document.getElementById('username').value;
-const errorMsg=document.getElementById('error-message');
-const namaTrimmed=inputNama.trim().toLowerCase();
-if(namaTrimmed==="storrytelling26"){
-window.location.href="godin.html";
-}else{
-errorMsg.style.display="block";
-document.getElementById('username').value="";
-document.getElementById('username').focus();
-}
-}
-document.getElementById("username").addEventListener("keypress",function(event){
-if(event.key==="Enter"){cekNama();}
-});
-</script>
+
+    <!-- Animasi Latar Belakang -->
+    <div class="background-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <!-- HALAMAN LOGIN -->
+    <div id="login-screen">
+        <h1>SYSTEM SECURED</h1>
+        <div class="input-group">
+            <input type="password" id="secret-code" placeholder="Masukkan Kode Rahasia" autocomplete="off">
+        </div>
+        <button onclick="checkCode()">AUTHORIZE</button>
+        <div id="error-msg" class="error-msg">Akses Ditolak. Kode Salah!</div>
+    </div>
+
+    <!-- HALAMAN UTAMA -->
+    <div id="main-screen">
+        <div class="card-3d" id="birthday-card">
+            <h1 class="title-glow">LEVEL 19 UNLOCKED</h1>
+            
+            <div class="photo-container">
+                <!-- Ganti 'foto-marco.jpg' dengan nama file foto temanmu (atau URL foto) -->
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Marco Putih" class="foto-marco">
+                <div class="gradient-overlay"></div>
+            </div>
+
+            <div class="ucapan-text">
+                Selamat menginjak usia 19 tahun, <span class="highlight-putih">MARCO PUTIH!</span><br><br>
+                Semoga di usia yang baru ini, kamu semakin <span class="highlight-putih">"memutih"</span>—putih hatinya, terang masa depannya, dan selalu bersinar dengan neon kebaikan! Teruslah menjadi cahaya yang paling terang di antara kita semua.
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Logika Pemeriksaan Kode Rahasia
+        function checkCode() {
+            const input = document.getElementById('secret-code').value;
+            const errorMsg = document.getElementById('error-msg');
+            const loginScreen = document.getElementById('login-screen');
+            const mainScreen = document.getElementById('main-screen');
+
+            if (input === "kode pemutihan") {
+                // Sembunyikan halaman login
+                loginScreen.classList.add('hidden');
+                // Tampilkan halaman utama dengan display flex
+                mainScreen.style.display = 'flex';
+                mainScreen.classList.remove('hidden');
+            } else {
+                // Munculkan error dan beri efek getar (shake)
+                errorMsg.style.opacity = '1';
+                loginScreen.animate([
+                    { transform: 'translateX(0)' },
+                    { transform: 'translateX(-10px)' },
+                    { transform: 'translateX(10px)' },
+                    { transform: 'translateX(-10px)' },
+                    { transform: 'translateX(10px)' },
+                    { transform: 'translateX(0)' }
+                ], { duration: 400 });
+                
+                setTimeout(() => {
+                    errorMsg.style.opacity = '0';
+                }, 3000);
+            }
+        }
+
+        // Animasi 3D Dinamis saat Kursor Bergerak (Tilt Effect)
+        document.addEventListener('mousemove', (e) => {
+            const card = document.getElementById('birthday-card');
+            if (card && document.getElementById('main-screen').style.display === 'flex') {
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                
+                // Merubah rotasi berdasarkan kursor
+                card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            }
+        });
+
+        // Kembalikan posisi kartu saat kursor keluar layar
+        document.addEventListener('mouseleave', () => {
+            const card = document.getElementById('birthday-card');
+            if (card) {
+                card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+                card.style.transition = 'transform 0.5s ease';
+            }
+        });
+        
+        // Hapus transisi saat kursor masuk lagi agar pergerakan mouse lebih mulus
+        document.addEventListener('mouseenter', () => {
+            const card = document.getElementById('birthday-card');
+            if (card) {
+                card.style.transition = 'none';
+            }
+        });
+
+        // Deteksi tombol Enter saat mengisi kode
+        document.getElementById('secret-code').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkCode();
+            }
+        });
+    </script>
 </body>
 </html>
